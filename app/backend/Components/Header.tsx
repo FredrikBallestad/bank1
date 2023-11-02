@@ -6,7 +6,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-gray-800 p-4 flex items-center justify-between">
+    <header className="bg-gray-800 p-4 flex items-center justify-between w-full fixed top-0">
       <div className="flex space-x-4">
         <a href="/" className="text-white">Hjem</a>
         <a href="/om" className="text-white" style={{ whiteSpace: 'nowrap' }}>Om oss</a>
@@ -21,5 +21,3 @@ export default function Header() {
     </header>
   );
 }
-
-
