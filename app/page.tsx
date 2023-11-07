@@ -1,15 +1,13 @@
-
-
 import Image from 'next/image'
 import Test from './Test'
 import Header from './backend/Components/Header'
+import Link from 'next/link';
 
 export default function Home() {
 
   return (
     <main className="flex flex-col items-center justify-center h-screen overflow-y-auto">
       <Header />
-
       <div className="w-4/5 mx-auto mt-8 bg-gray-800 p-4 rounded-md shadow-md text-white flex">
         <div className="w-1/2"> {/* Venstre side */}
           <h2 className="text-4xl font-semibold text-left mt-4">Prøv vårt boliglån</h2>
