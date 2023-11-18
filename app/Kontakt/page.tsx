@@ -3,7 +3,6 @@ import React from 'react';
 const Kontakt = () => {
   return (
     <div>
-      <h1>Kontakt Oss</h1>
       {/* Legg til innhold for kontaktssiden her */}
     </div>
   );
