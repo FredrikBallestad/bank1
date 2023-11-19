@@ -17,7 +17,7 @@ const Login = () => {
   
     try {
       // Utfør POST-forespørsel til backend med fetch API
-      const response = await fetch('/login', {
+      const response = await fetch('http://localhost:3001/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

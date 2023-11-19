@@ -1,7 +1,10 @@
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
+const cors = require('cors');
 const app = express();
-const PORT = process.env.PORT || 3000;
+app.use(cors()); // Aktiverer CORS for alle ruter
+app.use(express.json());
+const sqlite3 = require('sqlite3').verbose();
+const PORT = process.env.PORT || 3001;
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -15,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 // Koble til SQLite-databasen
-const db = new sqlite3.Database('.../profiles.db', sqlite3.OPEN_READWRITE, (err) => {
+const db = new sqlite3.Database('../../profiles.db', sqlite3.OPEN_READWRITE, (err) => {
   if (err) {
     console.error(err.message);
   } else {
