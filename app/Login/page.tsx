@@ -6,9 +6,39 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Logikk for å verifisere brukernavn og passord
+  
+    // Opprett JSON-objekt med brukerdata
+    const loginData = {
+      username: username,
+      password: password,
+    };
+  
+    try {
+      // Utfør POST-forespørsel til backend med fetch API
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+      });
+  
+      // Behandle responsen fra serveren
+      const responseData = await response.json();
+  
+      if (response.ok) {
+        // Logg inn vellykket, håndter videre logikk her
+        console.log('Innlogging vellykket:', responseData);
+      } else {
+        // Innlogging feilet, vis feilmelding
+        console.error('Innlogging feilet:', responseData);
+      }
+    } catch (error) {
+      // Håndter eventuelle nettverksfeil
+      console.error('Nettverksfeil:', error);
+    }
   };
 
   return (
