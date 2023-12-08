@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3001;
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+
 // Middleware for å parse JSON-laster
 app.use(express.json());
 
@@ -54,10 +55,13 @@ app.post('/login', (req, res) => {
     }
     
     if (user) {
-      // Sjekk at passordet matcher
-      const match = await bcrypt.compare(password, user.password_hash);
+      /*
+      // Sjekk at passordet matcher, må legge til encryption senere
+      //const match = await bcrypt.compare(password, user.password_hash);
       
-      if (match) {
+      //if (match) {
+      */  
+      if (password == user.password_hash) {  
         res.send('Innlogging vellykket!');
         // Sett opp en session eller token her om nødvendig
       } else {

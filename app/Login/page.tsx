@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import Header from '../backend/Components/Header'; // Sørg for at stien er riktig
+import Header from '../Components/Header'; // Sørg for at stien er riktig
 
 const Login = () => {
   const [username, setUsername] = useState('');

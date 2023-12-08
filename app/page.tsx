@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Test from './Test'
-import Header from './backend/Components/Header'
+import Header from './Components/Header'
 import Link from 'next/link';
 
 
