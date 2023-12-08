@@ -19,7 +19,7 @@ export default function Header() {
           <img src="/images/OIG.qVLyA2MiX9q.jpg" alt="Logo" className="w-20 h-12" style={imageStyle} />
         </Link> 
       </div>
-      <Link href="/bli-kunde">
+      <Link href="/Bli_Kunde">
           <span className="bg-blue-500 text-white px-4 py-2 rounded whitespace-nowrap mr-2">Bli kunde</span>
         </Link>
       <Link href="/Login">

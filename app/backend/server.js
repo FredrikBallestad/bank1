@@ -73,6 +73,44 @@ app.post('/login', (req, res) => {
   });
 });
 
+app.post('/Bli_Kunde', async (req, res) => {
+  const { username,email, password } = req.body;
+
+  // Valider input (eksempel: sjekk om passordet er sterkt nok, om e-posten er gyldig, osv.)
+
+  // Sjekk om brukeren allerede finnes
+  db.get('SELECT username FROM users WHERE username = ?', [username], async (err, row) => {
+    if (err) {
+      res.status(500).send({ error: 'Databasefeil under sjekk av brukernavn.' });
+      return;
+    }
+
+    if (row) {
+      res.status(409).send({ error: 'Brukernavn er allerede i bruk.' });
+      return;
+    }
+
+    try {
+      // Hash brukerens passord
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+      const startBalance = 50000;
+      // Lagre den nye brukeren i databasen
+      db.run('INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?, ?)', [username, email, hashedPassword, startBalance], (err) => {
+        if (err) {
+          res.status(500).send({ error: 'Databasefeil under opprettelse av ny bruker.' });
+        } else {
+          res.status(201).send({ message: 'Ny bruker opprettet.' });
+        }
+      });
+    } catch (error) {
+      res.status(500).send({ error: 'Feil under hashing av passord.' });
+    }
+  });
+});
+
+
+
 // Start serveren
 app.listen(PORT, () => {
   console.log(`Server kjører på port ${PORT}`);
