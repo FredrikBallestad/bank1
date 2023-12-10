@@ -25,7 +25,7 @@ const Bli_Kunde = () => {
   
     try {
       // Utfør POST-forespørsel til backend for registrering
-      const response = await fetch('http://localhost:3001/register', {
+      const response = await fetch('http://localhost:3001/Bli_Kunde', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

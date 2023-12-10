@@ -92,11 +92,11 @@ app.post('/Bli_Kunde', async (req, res) => {
 
     try {
       // Hash brukerens passord
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const password_hash = await bcrypt.hash(password, saltRounds);
 
-      const startBalance = 50000;
+      const money = 50000;
       // Lagre den nye brukeren i databasen
-      db.run('INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?, ?)', [username, email, hashedPassword, startBalance], (err) => {
+      db.run('INSERT INTO users (username, email, password_hash, money) VALUES (?, ?, ?, ?)', [username, email, password_hash, money], (err) => {
         if (err) {
           res.status(500).send({ error: 'Databasefeil under opprettelse av ny bruker.' });
         } else {
