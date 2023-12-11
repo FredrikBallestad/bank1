@@ -12,6 +12,7 @@ const saltRounds = 10;
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
+console.log(jwtSecret);
 
 
 // Middleware for å parse JSON-laster
@@ -64,15 +65,16 @@ app.post('/login', async (req, res) => {
       console.log('Passord match:', match);
 
       if (match) {
+        
         // Bruker er funnet og passordet matcher, generer en JWT
-       /* const token = jwt.sign(
+          const token = jwt.sign(
           { userId: user.id, username: user.username },
-          process.env.JWT_SECRET, // Husk å sette din JWT_SECRET i miljøet ditt
+          `${process.env.JWT_SECRET}`,
+          //process.env.JWT_SECRET, // Husk å sette din JWT_SECRET i miljøet ditt
           { expiresIn: '24h' } // Tokenet utløper etter 24 timer
         );
         // Send tokenet tilbake til klienten
-        res.json({ message: 'Innlogging vellykket!', token: token });*/
-        res.send("Innlogging vellykket")
+        res.json({ message: 'Innlogging vellykket!', token: token });
       } else {
         res.status(401).send('Feil brukernavn eller passord');
       }
@@ -109,13 +111,13 @@ app.post('/Bli_Kunde', async (req, res) => {
         if (err) {
           res.status(500).send({ error: 'Databasefeil under opprettelse av ny bruker.' });
         } else {
-          /*const token = jwt.sign(
+            const token = jwt.sign(
             { userId: this.lastID, username: username },
-            process.env.JWT_SECRET, // Hemmeligheten bør lagres sikkert
+            `${process.env.JWT_SECRET}`, // Hemmeligheten bør lagres sikkert
             { expiresIn: '24h' } // Tokenet utløper etter 24 timer
           );
-          res.status(201).send({ message: 'Ny bruker opprettet.', token: token });*/
-          res.send("bruker opprettet")
+          res.status(201).send({ message: 'Ny bruker opprettet.', token: token });
+          
         }
       });
     } catch (error) {
