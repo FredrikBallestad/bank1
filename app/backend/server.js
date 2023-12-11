@@ -9,6 +9,10 @@ const PORT = process.env.PORT || 3001;
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+require('dotenv').config();
+const jwt = require('jsonwebtoken');
+const jwtSecret = process.env.JWT_SECRET;
+
 
 // Middleware for å parse JSON-laster
 app.use(express.json());
@@ -44,7 +48,7 @@ app.use((err, req, res, next) => {
   res.status(500).send('Server error');
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   
   // Hent bruker fra databasen
@@ -53,17 +57,22 @@ app.post('/login', (req, res) => {
       res.status(500).send(err.message);
       return;
     }
-    
+
     if (user) {
-      /*
-      // Sjekk at passordet matcher, må legge til encryption senere
-      //const match = await bcrypt.compare(password, user.password_hash);
       
-      //if (match) {
-      */  
-      if (password == user.password_hash) {  
-        res.send('Innlogging vellykket!');
-        // Sett opp en session eller token her om nødvendig
+      const match = await bcrypt.compare(password, user.password_hash);
+      console.log('Passord match:', match);
+
+      if (match) {
+        // Bruker er funnet og passordet matcher, generer en JWT
+       /* const token = jwt.sign(
+          { userId: user.id, username: user.username },
+          process.env.JWT_SECRET, // Husk å sette din JWT_SECRET i miljøet ditt
+          { expiresIn: '24h' } // Tokenet utløper etter 24 timer
+        );
+        // Send tokenet tilbake til klienten
+        res.json({ message: 'Innlogging vellykket!', token: token });*/
+        res.send("Innlogging vellykket")
       } else {
         res.status(401).send('Feil brukernavn eller passord');
       }
@@ -100,7 +109,13 @@ app.post('/Bli_Kunde', async (req, res) => {
         if (err) {
           res.status(500).send({ error: 'Databasefeil under opprettelse av ny bruker.' });
         } else {
-          res.status(201).send({ message: 'Ny bruker opprettet.' });
+          /*const token = jwt.sign(
+            { userId: this.lastID, username: username },
+            process.env.JWT_SECRET, // Hemmeligheten bør lagres sikkert
+            { expiresIn: '24h' } // Tokenet utløper etter 24 timer
+          );
+          res.status(201).send({ message: 'Ny bruker opprettet.', token: token });*/
+          res.send("bruker opprettet")
         }
       });
     } catch (error) {
