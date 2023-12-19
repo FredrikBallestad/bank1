@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import Header from '../Components/Header'; // Sørg for at stien er riktig
+import Header from '../../Components/Header';
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -59,7 +59,7 @@ const Bli_Kunde = () => {
       //window.location.href = '/Konto/konto';
       if (response.ok) {
         // Registrering vellykket, håndter videre logikk her
-        router.push('/Konto');
+        router.push('/konto/a');
         console.log('Registrering vellykket:', responseData);
 
 

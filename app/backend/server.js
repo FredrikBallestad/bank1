@@ -127,6 +127,24 @@ app.post('/Bli_Kunde', async (req, res) => {
 });
 
 
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (token == null) {
+    return res.sendStatus(401); // Send en 401 Unauthorized hvis ingen token er funnet
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.sendStatus(403); // Send en 403 Forbidden hvis tokenet er ugyldig
+    }
+    req.user = user; // Tilordne brukerobjektet til request-objektet
+    next(); // Fortsett til neste middelvare/rutehandler
+  });
+};
+
+
 
 // Start serveren
 app.listen(PORT, () => {
