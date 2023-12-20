@@ -1,19 +1,27 @@
+require('dotenv').config({ path: '../../.env' });
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
+
 app.use(cors()); // Aktiverer CORS for alle ruter
 app.use(express.json());
+
 const sqlite3 = require('sqlite3').verbose();
 const PORT = process.env.PORT || 3001;
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
+console.log("hei");
+console.log(process.env.JWT_SECRET)
 console.log(jwtSecret);
+console.log("hei");
 
+const kontoRoutes = require('./routes/konto');
+app.use('/api/konto', kontoRoutes);
 
 // Middleware for å parse JSON-laster
 app.use(express.json());
@@ -76,7 +84,7 @@ app.post('/login', async (req, res) => {
         // Send tokenet tilbake til klienten
         res.json({ message: 'Innlogging vellykket!', token: token });
       } else {
-        res.status(401).send('Feil brukernavn eller passord');
+        res.status(401).send('Feil vn eller passord');
       }
     } else {
       res.status(401).send('Feil brukernavn eller passord');
@@ -116,8 +124,10 @@ app.post('/Bli_Kunde', async (req, res) => {
             `${process.env.JWT_SECRET}`, // Hemmeligheten bør lagres sikkert
             { expiresIn: '24h' } // Tokenet utløper etter 24 timer
           );
+          console.log("hei");
+          console.log(jwtSecret);
+          console.log("hei");
           res.status(201).send({ message: 'Ny bruker opprettet.', token: token });
-          
         }
       });
     } catch (error) {
@@ -127,7 +137,7 @@ app.post('/Bli_Kunde', async (req, res) => {
 });
 
 
-const authenticateToken = (req, res, next) => {
+/*const authenticateToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -142,7 +152,7 @@ const authenticateToken = (req, res, next) => {
     req.user = user; // Tilordne brukerobjektet til request-objektet
     next(); // Fortsett til neste middelvare/rutehandler
   });
-};
+};*/
 
 
 
