@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-
+const db = require('../database.js');
 
 
 // En middleware som verifiserer tokenet
@@ -11,14 +11,18 @@ const authenticateToken = (req, res, next) => {
 
   if (token == null) return res.sendStatus(401); // Ingen token, uautorisert
 
-  console.log(token)
-
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       console.log("Token verification error:");
       return res.sendStatus(403); // Token ikke gyldig, forbudt
     }
+    console.log("ab");
+    console.log(user);
+    console.log("ab");
+
     req.user = user;
+    req.userId = user.userId;
+    req.username = user.username;
     next(); // Tokenet gyldig, fortsett til neste middleware/rutehandler
   });
 };
@@ -26,26 +30,41 @@ const authenticateToken = (req, res, next) => {
 // En rute som returnerer brukerens kontoopplysninger
 router.get('/', authenticateToken, (req, res) => {
   // Bruker-IDen kan hentes fra req.user, som ble satt i authenticateToken middleware
-  const userId = req.user.id;
+  
+  const userId = req.userId; 
+  const brukernavn = req.username;
+  
+  const query = 'SELECT * FROM users WHERE id = ?';
+  db.get(query, [userId], (err, row) => {
+    if (err) {
+      // Håndter feilen, f.eks. send en feilmelding tilbake til klienten
+      res.status(500).json({ success: false, message: 'Databasefeil ved henting av brukerinfo.' });
+    } else {
+      // Ingen feil, send brukerdataen tilbake til klienten
+      if (row) {
+        res.json({
+          success: true,
+          message: 'Data hentet suksessfullt',
+          data: row // Her sender vi hele raden som er hentet fra databasen
+        });
+      } else {
+        // Ingen rad funnet for gitt id
+        res.status(404).json({ success: false, message: 'Ingen bruker funnet med gitt ID.' });
+      }
+    }
+  });
 
-  // Her ville du legge til logikk for å hente brukerens data basert på userId fra din database
-  // For eksempel:
-  // db.query('SELECT * FROM users WHERE id = ?', [userId], function(err, result) {
-  //   if (err) throw err;
-  //   res.json(result);
-  // });
 
-  // For nå, la oss bare sende tilbake et enkelt respons
-  //res.json({ id: userId, brukernavn: 'DummyBruker', saldo: 1000 });
-  res.json({
+  /*res.json({
     success: true,
     message: 'Data hentet suksessfullt',
     data: {
       id: userId,
-      brukernavn: 'DummyBruker',
+      brukernavn: brukernavn,
       saldo: 1000
     }
-  });
+
+  });*/
 });
 
 module.exports = router;

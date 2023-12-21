@@ -15,10 +15,8 @@ const saltRounds = 10;
 
 const jwt = require('jsonwebtoken');
 const jwtSecret = process.env.JWT_SECRET;
-console.log("hei");
-console.log(process.env.JWT_SECRET)
-console.log(jwtSecret);
-console.log("hei");
+
+const db = require('./database.js');
 
 const kontoRoutes = require('./routes/konto');
 app.use('/api/konto', kontoRoutes);
@@ -31,14 +29,6 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-// Koble til SQLite-databasen
-const db = new sqlite3.Database('../../profiles.db', sqlite3.OPEN_READWRITE, (err) => {
-  if (err) {
-    console.error(err.message);
-  } else {
-    console.log('Connected to the SQLite database.');
-  }
-});
 
 // Håndter GET-forespørsler til '/users'
 app.get('/users', (req, res) => {
@@ -115,18 +105,16 @@ app.post('/Bli_Kunde', async (req, res) => {
 
       const money = 50000;
       // Lagre den nye brukeren i databasen
-      db.run('INSERT INTO users (username, email, password_hash, money) VALUES (?, ?, ?, ?)', [username, email, password_hash, money], (err) => {
+      db.run('INSERT INTO users (username, email, password_hash, money) VALUES (?, ?, ?, ?)', [username, email, password_hash, money], function(err) {
         if (err) {
           res.status(500).send({ error: 'Databasefeil under opprettelse av ny bruker.' });
         } else {
+            console.log(`Ny bruker opprettet med ID: ${this.lastID}`);
             const token = jwt.sign(
             { userId: this.lastID, username: username },
             `${process.env.JWT_SECRET}`, // Hemmeligheten bør lagres sikkert
             { expiresIn: '24h' } // Tokenet utløper etter 24 timer
           );
-          console.log("hei");
-          console.log(jwtSecret);
-          console.log("hei");
           res.status(201).send({ message: 'Ny bruker opprettet.', token: token });
         }
       });
@@ -136,24 +124,12 @@ app.post('/Bli_Kunde', async (req, res) => {
   });
 });
 
-
-/*const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (token == null) {
-    return res.sendStatus(401); // Send en 401 Unauthorized hvis ingen token er funnet
+db.run('...', function(err) {
+  console.log(this); // Se hva 'this' inneholder
+  if (!err) {
+    console.log(this.lastID);
   }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.sendStatus(403); // Send en 403 Forbidden hvis tokenet er ugyldig
-    }
-    req.user = user; // Tilordne brukerobjektet til request-objektet
-    next(); // Fortsett til neste middelvare/rutehandler
-  });
-};*/
-
+});
 
 
 // Start serveren
