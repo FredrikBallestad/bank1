@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+
 export default function Header() {
   const imageStyle = {
     marginRight: '10px', // Juster venstre margin etter dine preferanser
