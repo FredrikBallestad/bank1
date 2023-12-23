@@ -1,8 +1,11 @@
 "use client";
 import React, { useState } from 'react';
 import Header from '../Components/Header'; // Sørg for at stien er riktig
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
+  const router = useRouter();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -27,9 +30,11 @@ const Login = () => {
   
       // Behandle responsen fra serveren
       const responseData = await response.json();
-  
+      localStorage.setItem('token', responseData.token);
+
       if (response.ok) {
         // Logg inn vellykket, håndter videre logikk her
+        router.push('/Konto');
         console.log('Innlogging vellykket:', responseData);
       } else {
         // Innlogging feilet, vis feilmelding

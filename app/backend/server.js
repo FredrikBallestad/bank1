@@ -72,9 +72,10 @@ app.post('/login', async (req, res) => {
           { expiresIn: '24h' } // Tokenet utløper etter 24 timer
         );
         // Send tokenet tilbake til klienten
-        res.json({ message: 'Innlogging vellykket!', token: token });
+        //res.json({ message: 'Innlogging vellykket!', token: token });
+        res.status(201).send({ message: 'Innlogging vellykket', token: token });
       } else {
-        res.status(401).send('Feil vn eller passord');
+        res.status(401).send('Feil navn eller passord');
       }
     } else {
       res.status(401).send('Feil brukernavn eller passord');
