@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import LoggedInHeader from '../Components/LoggedInHeader';
+
 
 
 interface BrukerData {
@@ -64,40 +66,43 @@ const Konto = () => {
   // Vis brukerdata her
   
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">Kontooversikt for {brukerData.data.username}</h1>
-  
-      <div className="w-full max-w-sm">
-        <Link href={`/Konto/Kontoer/Sparekonto/${brukerData.data.id}`}>
-          <span className="flex items-center justify-between bg-white hover:bg-gray-200 text-blue-500 text-lg font-bold py-3 px-4 w-full cursor-pointer shadow-md transition-colors duration-150">
-            <div className="flex items-center"> {/* Container for bilde og tekst */}
-              <Image src="/images/sparegris.webp" alt="Sparegris" width={40} height={40} />
-              <span className="ml-4">Sparekonto</span> {/* Margin venstre for å gi litt plass mellom bildet og teksten */}
-            </div>
-            <span>{brukerData.data.money} kr</span> {/* Pengebeløpet justert til høyre */}
-          </span>
-        </Link>
-        <Link href={`/Konto/Kontoer/Aksjer/${brukerData.data.id}`}>
-          <span className="flex items-center justify-between bg-white hover:bg-gray-200 text-blue-500 text-lg font-bold py-3 px-4 w-full cursor-pointer shadow-md transition-colors duration-150">
-            <div className="flex items-center"> {/* Container for bilde og tekst */}
-              <Image src="/images/aksjegraf.webp" alt="Sparegris" width={40} height={40} />
-              <span className="ml-4">Aksjer</span> {/* Margin venstre for å gi litt plass mellom bildet og teksten */}
-            </div>
-            <span>0 kr</span> {/* Pengebeløpet justert til høyre */}
-          </span>
-        </Link>
-        <Link href={`/Konto/Kontoer/Aksjesparekonto/${brukerData.data.id}`}>
-          <span className="flex items-center justify-between bg-white hover:bg-gray-200 text-blue-500 text-lg font-bold py-3 px-4 w-full cursor-pointer shadow-md transition-colors duration-150">
-            <div className="flex items-center"> {/* Container for bilde og tekst */}
-              <Image src="/images/aksjegraf.webp" alt="Sparegris" width={40} height={40} />
-              <span className="ml-4">Aksjesparekonto</span> {/* Margin venstre for å gi litt plass mellom bildet og teksten */}
-            </div>
-            <span>0 kr</span> {/* Pengebeløpet justert til høyre */}
-          </span>
-        </Link>
-      </div>
-    </div>
+    <>
+    <LoggedInHeader />
+
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <h1 className="text-2xl font-bold mb-6 text-gray-800">Kontooversikt for {brukerData.data.username}</h1>
     
+        <div className="w-full max-w-sm">
+          <Link href={`/Konto/Kontoer/Sparekonto/${brukerData.data.id}`}>
+            <span className="flex items-center justify-between bg-white hover:bg-gray-200 text-blue-500 text-lg font-bold py-3 px-4 w-full cursor-pointer shadow-md transition-colors duration-150">
+              <div className="flex items-center"> {/* Container for bilde og tekst */}
+                <Image src="/images/sparegris.webp" alt="Sparegris" width={40} height={40} />
+                <span className="ml-4">Sparekonto</span> {/* Margin venstre for å gi litt plass mellom bildet og teksten */}
+              </div>
+              <span>{brukerData.data.money} kr</span> {/* Pengebeløpet justert til høyre */}
+            </span>
+          </Link>
+          <Link href={`/Konto/Kontoer/Aksjer/${brukerData.data.id}`}>
+            <span className="flex items-center justify-between bg-white hover:bg-gray-200 text-blue-500 text-lg font-bold py-3 px-4 w-full cursor-pointer shadow-md transition-colors duration-150">
+              <div className="flex items-center"> {/* Container for bilde og tekst */}
+                <Image src="/images/aksjegraf.webp" alt="Sparegris" width={40} height={40} />
+                <span className="ml-4">Aksjer</span> {/* Margin venstre for å gi litt plass mellom bildet og teksten */}
+              </div>
+              <span>0 kr</span> {/* Pengebeløpet justert til høyre */}
+            </span>
+          </Link>
+          <Link href={`/Konto/Kontoer/Aksjesparekonto/${brukerData.data.id}`}>
+            <span className="flex items-center justify-between bg-white hover:bg-gray-200 text-blue-500 text-lg font-bold py-3 px-4 w-full cursor-pointer shadow-md transition-colors duration-150">
+              <div className="flex items-center"> {/* Container for bilde og tekst */}
+                <Image src="/images/aksjegraf.webp" alt="Sparegris" width={40} height={40} />
+                <span className="ml-4">Aksjesparekonto</span> {/* Margin venstre for å gi litt plass mellom bildet og teksten */}
+              </div>
+              <span>0 kr</span> {/* Pengebeløpet justert til høyre */}
+            </span>
+          </Link>
+        </div>
+      </div>
+    </>
   );
   
   
