@@ -1,15 +1,20 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function LoggedInHeader() {
   const imageStyle = {
     marginRight: '110px', // Juster venstre margin etter dine preferanser
   };
 
+  const router = useRouter();
+  
   const handleLogout = () => {
     // Logikk for å håndtere utlogging
     console.log('Brukeren har logget ut');
     // Her bør du implementere utlogging, f.eks. ved å slette session/token og omdirigere til login-siden
+    localStorage.removeItem('token');
+    router.push('/Login');
   };
 
   return (

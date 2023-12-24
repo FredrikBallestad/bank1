@@ -53,18 +53,6 @@ router.get('/', authenticateToken, (req, res) => {
       }
     }
   });
-
-
-  /*res.json({
-    success: true,
-    message: 'Data hentet suksessfullt',
-    data: {
-      id: userId,
-      brukernavn: brukernavn,
-      saldo: 1000
-    }
-
-  });*/
 });
 
 module.exports = router;
