@@ -4,8 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import LoggedInHeader from '../Components/LoggedInHeader';
 
-
-
 interface BrukerData {
   success: boolean;
   message: string;
@@ -70,8 +68,16 @@ const Konto = () => {
     <LoggedInHeader />
 
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <h1 className="text-2xl font-bold mb-6 text-gray-800">Kontooversikt for {brukerData.data.username}</h1>
-    
+
+      <Link href={`/Konto/Betal/${brukerData.data.id}`}>
+        <span className="mt-10 flex items-center bg-white text-white px-4 py-2 rounded-full whitespace-nowrap ring-2 ring-blue-500">
+          <Image src="/images/betalknapp.webp" alt="Sparegris" width={40} height={40} />
+          <span className="ml-4 text-blue-500 font-bold">Betal</span>
+        </span>
+      </Link>
+
+        <h1 className="text-2xl font-bold mb-6 mt-10 text-gray-800">Kontooversikt for {brukerData.data.username}</h1>
+
         <div className="w-full max-w-sm">
           <Link href={`/Konto/Kontoer/Sparekonto/${brukerData.data.id}`}>
             <span className="flex items-center justify-between bg-white hover:bg-gray-200 text-blue-500 text-lg font-bold py-3 px-4 w-full cursor-pointer shadow-md transition-colors duration-150">
