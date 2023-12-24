@@ -56,7 +56,6 @@ const Bli_Kunde = () => {
 
       // Lagre token og omdiriger brukeren
       localStorage.setItem('token', responseData.token);
-      //window.location.href = '/Konto/konto';
       if (response.ok) {
         // Registrering vellykket, håndter videre logikk her
         router.push('/Konto');

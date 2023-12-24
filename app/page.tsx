@@ -22,18 +22,19 @@ export default function Home() {
       </div>
 
       <div className="flex justify-center mt-8 space-x-4 mb-8">
-        <button className="bg-white text-blue-500 px-40 py-10 rounded border border-black hover:bg-blue-500 hover:text-white transition-colors duration-300">
+        <button className="text-xl bg-white text-blue-500 px-4 py-2 rounded border border-black hover:bg-blue-500 hover:text-white transition-colors duration-300 flex items-center">
+          <img src="/images/boliglånhus.webp" alt="Boliglån" className="w-18 h-24 mr-48" /> 
           Boliglån
         </button>
-        <button className="bg-white text-blue-500 px-40 py-10 rounded border border-black hover:bg-blue-500 hover:text-white transition-colors duration-300">
+        <button className="text-xl bg-white text-blue-500 px-4 py-2 rounded border border-black hover:bg-blue-500 hover:text-white transition-colors duration-300 flex items-center">
+          <img src="/images/sparegris.webp" alt="Sparing" className="w-18 h-24 mr-48" /> 
           Sparing
         </button>
-        <button className="bg-white text-blue-500 px-40 py-10 rounded border border-black hover:bg-blue-500 hover:text-white transition-colors duration-300">
+        <button className="text-xl bg-white text-blue-500 px-4 py-2 rounded border border-black hover:bg-blue-500 hover:text-white transition-colors duration-300 flex items-center">
+          <img src="/images/forsikring.webp" alt="Sparing" className="w-18 h-24 mr-48" /> 
           Forsikring
         </button>
       </div>
-
-
 
       {/*<div className="w-4/5 mx-auto mt-8 bg-blue-500 p-4 rounded-md shadow-md text-white flex h-96">
         <div className="w-1/2"> 
