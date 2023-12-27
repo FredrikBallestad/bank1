@@ -15,20 +15,26 @@ const authenticateToken = (req, res, next) => {
       console.log("Token verification error:");
       return res.sendStatus(403); // Token ikke gyldig, forbudt
     }
+    req.userId = user.userId;
     next(); // Tokenet gyldig, fortsett til neste middleware/rutehandler
   });
 };
 
 
-const transferMoney = (fromAccountId, toAccountId, amount) => {
+const transferMoney = (userId, fromAccountId, toAccountId, amount) => {
   return new Promise((resolve, reject) => {
+
+    if (Number(userId) !== Number(fromAccountId)) {
+      return reject(new Error("Kontoen tilhører ikke den autentiserte brukeren."));
+    }
+
     db.serialize(() => {
       db.run("BEGIN TRANSACTION;");
 
-      const debitQuery = "UPDATE users SET money = money - ? WHERE id = ? AND money >= 0";
+      const debitQuery = "UPDATE users SET money = money - ? WHERE id = ? AND money >= ?";
       const creditQuery = "UPDATE users SET money = money + ? WHERE id = ?";
 
-      db.run(debitQuery, [amount, fromAccountId], function (err) {
+      db.run(debitQuery, [amount, fromAccountId, amount], function (err) {
         if (err) {
           db.run("ROLLBACK;");
           return reject(err);
@@ -61,16 +67,17 @@ const transferMoney = (fromAccountId, toAccountId, amount) => {
   });
 };
 
-
-
 router.post('/', authenticateToken, async (req, res) => {
     try {
+
+      const userId = req.userId;
+
       const { fromAccountId, toAccountId, amount, date, mesaage} = req.body;
       
       // Validering og logikk for å trekke beløpet fra avsender og legge til hos mottaker
       // ...
       // Kall funksjonen for å overføre penger
-    await transferMoney(fromAccountId, toAccountId, amount);
+    await transferMoney(userId, fromAccountId, toAccountId, amount);
     res.send({ success: true, message: 'Overføringen ble gjennomført.' });
   } catch (error) {
     // Håndter eventuelle feil som oppstår
