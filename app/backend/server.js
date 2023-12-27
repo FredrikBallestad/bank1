@@ -21,6 +21,9 @@ const db = require('./database.js');
 const kontoRoutes = require('./routes/konto');
 app.use('/api/konto', kontoRoutes);
 
+const paymentRoutes = require('./routes/payment');
+app.use('/api/payment', paymentRoutes);
+
 // Middleware for å parse JSON-laster
 app.use(express.json());
 
