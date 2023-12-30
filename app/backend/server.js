@@ -107,11 +107,29 @@ app.post('/Bli_Kunde', async (req, res) => {
       // Hash brukerens passord
       const password_hash = await bcrypt.hash(password, saltRounds);
 
-      const money = 50000;
+      const money_brukskonto = 0;
+      const brukskonto_account = await generateAccountNumber(1, 10);
+      const brukskonto_account_number = parseInt(brukskonto_account);
+      
+      const money_sparekonto = 50000;
+      const sparekonto_account = await generateAccountNumber(2, 10);
+      const sparekonto_account_number = parseInt(sparekonto_account);
+
+      const money_aksjesparekonto = 10;
+      const aksjesparekonto_account = await generateAccountNumber(3, 10);
+      const aksjesparekonto_account_number = parseInt(aksjesparekonto_account);
+
+      const money_bsu = 0;
+      const bsu_account = await generateAccountNumber(4, 10);
+      const bsu_account_number = parseInt(bsu_account);
+
+      db.run('INSERT INTO users (username, email, password_hash, money_brukskonto, brukskonto_account_number, money_sparekonto, sparekonto_account_number, money_aksjesparekonto, aksjesparekonto_account_number, money_bsu, bsu_account_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [username, email, password_hash, money_brukskonto, brukskonto_account_number, money_sparekonto, sparekonto_account_number, money_aksjesparekonto, aksjesparekonto_account_number, money_bsu, bsu_account_number], function(err) {
+        
+      /*const money = 50000;
       // Lagre den nye brukeren i databasen
-      db.run('INSERT INTO users (username, email, password_hash, money) VALUES (?, ?, ?, ?)', [username, email, password_hash, money], function(err) {
+      db.run('INSERT INTO users (username, email, password_hash, money) VALUES (?, ?, ?, ?)', [username, email, password_hash, money], function(err) {*/
         if (err) {
-          res.status(500).send({ error: 'Databasefeil under opprettelse av ny bruker.' });
+          res.status(500).send({ error: 'Databasefeil under opprettelse av ny bruker. Potensiell feil kan være at brukernavn eller kontonumre ikke er unike'});
         } else {
             console.log(`Ny bruker opprettet med ID: ${this.lastID}`);
             const token = jwt.sign(
@@ -127,6 +145,58 @@ app.post('/Bli_Kunde', async (req, res) => {
     }
   });
 });
+
+//Lager unike tilfeldige kontonure for de ulike kontoene
+async function generateAccountNumber(type, length) {
+  let isUnique = false;
+  let sequence = '';
+
+  while (!isUnique) {
+    sequence = type; // Start med kontotype
+
+    for (let i = 0; i < length - 2; i++) { // -2 fordi vi legger til et siffer og et sjekksiffer senere
+      sequence += Math.floor(Math.random() * 10).toString();
+    }
+
+    sequence += '0'; // Legger til et ekstra siffer
+
+    // Beregner og legger til Luhns sjekksiffer
+    const checkDigit = calculateLuhn(sequence);
+    sequence = sequence.substring(0, sequence.length - 1) + checkDigit;
+
+    // Sjekk om kontonummeret er unikt (pseudokode)
+    isUnique = await checkIfAccountNumberIsUnique(sequence);
+  }
+  return sequence;
+}
+
+function checkIfAccountNumberIsUnique(accountNumber) {
+  return new Promise((resolve, reject) => {
+      db.get('SELECT id FROM users WHERE brukskonto_account_number = ? OR sparekonto_account_number = ? OR aksjesparekonto_account_number = ? OR bsu_account_number = ?', [accountNumber, accountNumber, accountNumber, accountNumber], (err, row) => {
+          if (err) {
+              reject(err);
+          } else {
+              resolve(!row);
+          }
+      });
+  });
+}
+
+function calculateLuhn(digits) {
+  let sum = 0;
+  let shouldDouble = false;
+  for (let i = digits.length - 1; i >= 0; i--) {
+      let digit = parseInt(digits.charAt(i), 10);
+      if (shouldDouble) {
+          digit *= 2;
+          if (digit > 9) digit -= 9;
+      }
+      sum += digit;
+      shouldDouble = !shouldDouble;
+  }
+  return (10 - (sum % 10)) % 10;
+}
+
 
 db.run('...', function(err) {
   console.log(this); // Se hva 'this' inneholder

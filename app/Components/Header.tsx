@@ -11,8 +11,9 @@ export default function FellesHeader() {
     useEffect(() => {
         // Her vil du sjekke om brukeren er logget inn, for eksempel ved å sjekke en token i localStorage
         const token = localStorage.getItem('token');
-        console.log(token);
+        console.log("true???: ")
         setIsLoggedIn(!!token);
+        console.log(isLoggedIn);
     }, []);
 
     const handleLogout = () => {

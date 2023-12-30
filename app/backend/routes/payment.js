@@ -31,8 +31,8 @@ const transferMoney = (userId, fromAccountId, toAccountId, amount) => {
     db.serialize(() => {
       db.run("BEGIN TRANSACTION;");
 
-      const debitQuery = "UPDATE users SET money = money - ? WHERE id = ? AND money >= ?";
-      const creditQuery = "UPDATE users SET money = money + ? WHERE id = ?";
+      const debitQuery = "UPDATE users SET money_sparekonto = money_sparekonto - ? WHERE id = ? AND money_sparekonto >= ?";
+      const creditQuery = "UPDATE users SET money_sparekonto = money_sparekonto + ? WHERE id = ?";
 
       db.run(debitQuery, [amount, fromAccountId, amount], function (err) {
         if (err) {

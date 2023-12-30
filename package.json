@@ -14,6 +14,8 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
+    "luhn": "^2.4.1",
+    "luhn-js": "^1.1.2",
     "next": "^14.0.1",
     "react": "^18",
     "react-dom": "^18",

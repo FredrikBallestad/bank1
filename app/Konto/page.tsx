@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import LoggedInHeader from '../Components/LoggedInHeader';
 
-interface BrukerData {
+/*interface BrukerData {
   success: boolean;
   message: string;
   data: {
@@ -14,7 +14,27 @@ interface BrukerData {
     password_hash: string;
     money: number;
   };
+}*/
+
+interface BrukerData {
+  success: boolean;
+  message: string;
+  data: {
+    id: number;
+    username: string;
+    email: string;
+    password_hash: string;
+    money_brukskonto: number;
+    brukskonto_account_number: number;
+    money_sparekonto: number;
+    sparekonto_account_number: number;
+    money_aksjesparekonto: number;
+    aksjesparekonto_account_number: number;
+    money_bsu: number;
+    bsu_account_number: number;
+  };
 }
+
 
 const Konto = () => {
   const [brukerData, setBrukerData] = useState<BrukerData | null>(null);
@@ -85,7 +105,7 @@ const Konto = () => {
                 <Image src="/images/sparegris.webp" alt="Sparegris" width={40} height={40} />
                 <span className="ml-4">Sparekonto</span> {/* Margin venstre for å gi litt plass mellom bildet og teksten */}
               </div>
-              <span>{brukerData.data.money} kr</span> {/* Pengebeløpet justert til høyre */}
+              <span>{brukerData.data.money_sparekonto} kr</span> {/* Pengebeløpet justert til høyre */}
             </span>
           </Link>
           <Link href={`/Konto/Kontoer/Aksjer/${brukerData.data.id}`}>
