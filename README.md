@@ -13,9 +13,13 @@ pnpm dev
 # or
 bun dev
 ```
-In order to run the node.js server go to /bank1/app/backend and run this in terminal: node server.js
+In order to run the node.js server go to /bank1/app/backend and run this in terminal: 
 
+
+```bash
+node server.js
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
